@@ -487,3 +487,5 @@ namespace Reshetilov_IKM722a_Course_project1
         }
     }
 }
+
+// Проєкт було перенесено на .NET 4, було створено новий репозиторій на GitHub.
