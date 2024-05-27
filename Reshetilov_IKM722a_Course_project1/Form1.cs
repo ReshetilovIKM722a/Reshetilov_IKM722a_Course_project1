@@ -96,7 +96,12 @@ namespace Reshetilov_IKM722a_Course_project1
             if (Mode)
             {
                 if (Mode)
-                    tbInput.Enabled = true;// Режим дозволу введення tbInput.Focus();
+                {
+                    tbInput.Enabled = true;
+                    tbInput2.Enabled = true;
+                    tbInput3.Enabled = true;// Режим дозволу введення
+                }
+                    tbInput.Focus();
                 tClock.Start();
                 bStart.Text = "Стоп"; // зміна тексту на кнопці на "Стоп"
                 this.Mode = false;
@@ -105,10 +110,12 @@ namespace Reshetilov_IKM722a_Course_project1
             else
             {
                 tbInput.Enabled = false;
+                tbInput2.Enabled = false;
+                tbInput3.Enabled = false;
                 tClock.Stop();
                 bStart.Text = "Пуск";// зміна тексту на кнопці на "Пуск"
                 this.Mode = true;
-                MajorObject.Write(tbInput.Text);// Запис даних у об'єкт
+                MajorObject.Write(tbInput.Text, tbInput2.Text, tbInput3.Text);// Запис даних у об'єкт
                 MajorObject.Task();// Обробка даних
                 label1.Text = MajorObject.Read();// Відображення результату
                 пToolStripMenuItem.Text = "Старт";
@@ -119,7 +126,7 @@ namespace Reshetilov_IKM722a_Course_project1
         {
             tClock.Stop();
             tClock.Start();
-            if ((e.KeyChar >= '0') & (e.KeyChar <= '9') | (e.KeyChar == (char)8))
+            if ((e.KeyChar >= '0') & (e.KeyChar <= '9') | (e.KeyChar == ' '))
             {
                 return;
             }
@@ -484,6 +491,11 @@ namespace Reshetilov_IKM722a_Course_project1
             {
                 SetText(InputData);
             }
+        }
+
+        private void tbInput_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

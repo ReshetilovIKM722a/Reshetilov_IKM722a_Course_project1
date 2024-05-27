@@ -47,9 +47,9 @@ namespace Reshetilov_IKM722a_Course_project1
             return this.TimeBegin;
         }
 
-        public void Write(string D)
+        public void Write(string D, string D1, string D2)
         {
-            this.Data = D;
+            this.Data = D + ' ' + D1 + ' ' + D2;
         }
         public string Read()
         {
@@ -58,48 +58,56 @@ namespace Reshetilov_IKM722a_Course_project1
 
         public void Task()
         {
-            if (this.Data.Length > 5)
-            {
-                this.Result = Convert.ToString(true);
+            string[] dataParts = Data.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            List<int[]> numberLists = new List<int[]>();
+            List<double> averages = new List<double>();
 
-            }
-            else
+            foreach (var str in dataParts)
             {
-                this.Result = Convert.ToString(false);
+                int[] numbers = str.Select(c => int.Parse(c.ToString())).ToArray();
+                numberLists.Add(numbers);
+                var average = numbers.Average();
+                averages.Add(average);
             }
+
+            double maxAverage = averages.Max();
+            this.Result = maxAverage.ToString();
             this.Modify = true; // Дозвіл запису
         }
 
-        public void SaveToFile() // Запис даних до файлу
+        public void SaveToFile() // Запис даних до файлу    
         {
             if (!this.Modify)
                 return;
             try
             {
-                Stream S; // створення потоку
-                if (File.Exists(this.SaveFileName))// існує файл?
+                Stream S;
+                if (File.Exists(this.SaveFileName))
                 {
-                    S = File.Open(this.SaveFileName, FileMode.Append);// Відкриття файлу для збереження
+                    S = File.Open(this.SaveFileName, FileMode.Append);
                 }
                 else
                 {
-                    S = File.Open(this.SaveFileName, FileMode.Create);// створити файл
+                    S = File.Open(this.SaveFileName, FileMode.Create);
                 }
-                Buffer D = new Buffer(); // створення буферної змінної
-                D.Data = this.Data;
+
+                
+                string[] dataArray = this.Data.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                Buffer D = new Buffer();
+                D.Data = dataArray;
                 D.Result = Convert.ToString(this.Result);
                 D.Key = Key;
                 Key++;
-                BinaryFormatter BF = new BinaryFormatter(); // створення об'єкта для форматування
+                BinaryFormatter BF = new BinaryFormatter();
                 BF.Serialize(S, D);
-                S.Flush(); // очищення буфера потоку
-                S.Close(); // закриття потоку
-                this.Modify = false; // Заборона повторного запису
+                S.Flush();
+                S.Close();
+                this.Modify = false;
             }
             catch
             {
-
-                MessageBox.Show("Помилка роботи з файлом"); // Виведення на екран повідомлення "Помилка роботи з файлом"
+                MessageBox.Show("Помилка роботи з файлом");
             }
         }
 
@@ -109,45 +117,52 @@ namespace Reshetilov_IKM722a_Course_project1
             {
                 if (!File.Exists(this.OpenFileName))
                 {
-                    MessageBox.Show("Файлу немає"); // Виведення на екран повідомлення "файлу немає"
+                    MessageBox.Show("Файлу немає"); 
                     return;
                 }
-                Stream S; // створення потоку
-                S = File.Open(this.OpenFileName, FileMode.Open); // зчитування даних з файлу
+                Stream S = File.Open(this.OpenFileName, FileMode.Open); 
                 Buffer D;
-                object O; // буферна змінна для контролю формату
-                BinaryFormatter BF = new BinaryFormatter(); // створення об'єкту для форматування
-                //формуємо таблицю
+                object O; 
+                BinaryFormatter BF = new BinaryFormatter(); 
+
                 System.Data.DataTable MT = new System.Data.DataTable();
-                System.Data.DataColumn cKey = new
-                System.Data.DataColumn("Ключ");// формуємо колонку "Ключ"
-                System.Data.DataColumn cInput = new
-                System.Data.DataColumn("Вхідні дані");// формуємо колонку "Вхідні дані"
-                System.Data.DataColumn cResult = new
-                System.Data.DataColumn("Результат");// формуємо колонку "Результат"
-                MT.Columns.Add(cKey);// додавання ключа
-                MT.Columns.Add(cInput);// додавання вхідних даних
-                MT.Columns.Add(cResult);// додавання результату
+                System.Data.DataColumn cKey = new System.Data.DataColumn("Ключ"); 
+                System.Data.DataColumn cInput1 = new System.Data.DataColumn("Вхідні дані 1"); 
+                System.Data.DataColumn cInput2 = new System.Data.DataColumn("Вхідні дані 2"); 
+                System.Data.DataColumn cInput3 = new System.Data.DataColumn("Вхідні дані 3");
+                System.Data.DataColumn cResult = new System.Data.DataColumn("Результат");
+                MT.Columns.Add(cKey); 
+                MT.Columns.Add(cInput1); 
+                MT.Columns.Add(cInput2); 
+                MT.Columns.Add(cInput3); 
+                MT.Columns.Add(cResult); 
 
                 while (S.Position < S.Length)
                 {
-                    O = BF.Deserialize(S); // десеріалізація
+                    O = BF.Deserialize(S); 
                     D = O as Buffer;
                     if (D == null) break;
-                    System.Data.DataRow MR;
-                    MR = MT.NewRow();
-                    MR["Ключ"] = D.Key; // Занесення в таблицю номер
-                    MR["Вхідні дані"] = D.Data; // Занесення в таблицю вхідних даних
-                    MR["Результат"] = D.Result; // Занесення в таблицю результатів
+
+                    System.Data.DataRow MR = MT.NewRow();
+                    MR["Ключ"] = D.Key; 
+
+                    string[] dataParts = D.Data[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    MR["Вхідні дані 1"] = dataParts.Length > 0 ? dataParts[0] : null;
+                    MR["Вхідні дані 2"] = dataParts.Length > 1 ? dataParts[1] : null;
+                    MR["Вхідні дані 3"] = dataParts.Length > 2 ? dataParts[2] : null;
+
+                    MR["Результат"] = D.Result;
+
                     MT.Rows.Add(MR);
                 }
                 DG.DataSource = MT;
-                S.Close(); // закриття
+                S.Close();
             }
             catch
             {
                 MessageBox.Show("Помилка файлу"); // Виведення на екран повідомлення "Помилка файлу"
             }
+
             //ReadFromFile закінчився
         }
 

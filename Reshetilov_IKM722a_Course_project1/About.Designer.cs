@@ -40,17 +40,18 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(181, 86);
+            this.label1.Location = new System.Drawing.Point(153, 65);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(294, 217);
+            this.label1.Size = new System.Drawing.Size(362, 279);
             this.label1.TabIndex = 0;
             this.label1.Text = "Розробив\r\nКурсовий проект\r\nстудент групи ІКМ-722а\r\nРешетілов Д. А.\r\n\r\nТекст завда" +
-    "ння:\r\nтекст\r\n";
+    "ння:\r\nВизначити найбільше середнє\r\n арифметичне чисел, що \r\nстановлять три задан" +
+    "их числа.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(290, 345);
+            this.button1.Location = new System.Drawing.Point(296, 369);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
