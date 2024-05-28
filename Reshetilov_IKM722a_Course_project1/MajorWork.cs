@@ -58,22 +58,31 @@ namespace Reshetilov_IKM722a_Course_project1
 
         public void Task()
         {
-            string[] dataParts = Data.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            List<int[]> numberLists = new List<int[]>();
-            List<double> averages = new List<double>();
-
-            foreach (var str in dataParts)
+            try
             {
-                int[] numbers = str.Select(c => int.Parse(c.ToString())).ToArray();
-                numberLists.Add(numbers);
-                var average = numbers.Average();
-                averages.Add(average);
+                    string[] dataParts = Data.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    List<int[]> numberLists = new List<int[]>();
+                    List<double> averages = new List<double>();
+
+                    foreach (var str in dataParts)
+                    {
+                        int[] numbers = str.Select(c => int.Parse(c.ToString())).ToArray();
+                        numberLists.Add(numbers);
+                        var average = numbers.Average();
+                        averages.Add(average);
+                    }
+
+                    double maxAverage = averages.Max();
+                    this.Result = maxAverage.ToString();
+                    this.Modify = true; // Дозвіл запису
+            }
+            catch
+            {
+                MessageBox.Show("Порожній рядок", "Помилка!");
             }
 
-            double maxAverage = averages.Max();
-            this.Result = maxAverage.ToString();
-            this.Modify = true; // Дозвіл запису
         }
+
 
         public void SaveToFile() // Запис даних до файлу    
         {

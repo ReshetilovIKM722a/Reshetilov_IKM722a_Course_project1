@@ -95,13 +95,10 @@ namespace Reshetilov_IKM722a_Course_project1
         {
             if (Mode)
             {
-                if (Mode)
-                {
-                    tbInput.Enabled = true;
-                    tbInput2.Enabled = true;
-                    tbInput3.Enabled = true;// Режим дозволу введення
-                }
-                    tbInput.Focus();
+                tbInput.Enabled = true;
+                tbInput2.Enabled = true;
+                tbInput3.Enabled = true; // Режим дозволу введення
+                tbInput.Focus();
                 tClock.Start();
                 bStart.Text = "Стоп"; // зміна тексту на кнопці на "Стоп"
                 this.Mode = false;
@@ -109,16 +106,25 @@ namespace Reshetilov_IKM722a_Course_project1
             }
             else
             {
-                tbInput.Enabled = false;
-                tbInput2.Enabled = false;
-                tbInput3.Enabled = false;
-                tClock.Stop();
-                bStart.Text = "Пуск";// зміна тексту на кнопці на "Пуск"
-                this.Mode = true;
-                MajorObject.Write(tbInput.Text, tbInput2.Text, tbInput3.Text);// Запис даних у об'єкт
-                MajorObject.Task();// Обробка даних
-                label1.Text = MajorObject.Read();// Відображення результату
-                пToolStripMenuItem.Text = "Старт";
+                if (!string.IsNullOrWhiteSpace(tbInput.Text) &&
+                    !string.IsNullOrWhiteSpace(tbInput2.Text) &&
+                    !string.IsNullOrWhiteSpace(tbInput3.Text))
+                {
+                    tbInput.Enabled = false;
+                    tbInput2.Enabled = false;
+                    tbInput3.Enabled = false;
+                    tClock.Stop();
+                    bStart.Text = "Пуск"; // зміна тексту на кнопці на "Пуск"
+                    this.Mode = true;
+                    MajorObject.Write(tbInput.Text, tbInput2.Text, tbInput3.Text); // Запис даних у об'єкт
+                    MajorObject.Task(); // Обробка даних
+                    label1.Text = MajorObject.Read(); // Відображення результату
+                    пToolStripMenuItem.Text = "Старт";
+                }
+                else
+                {
+                    MessageBox.Show("Введіть всі числа", "Увага!");
+                }
             }
         }
 
@@ -126,7 +132,7 @@ namespace Reshetilov_IKM722a_Course_project1
         {
             tClock.Stop();
             tClock.Start();
-            if ((e.KeyChar >= '0') & (e.KeyChar <= '9') | (e.KeyChar == ' '))
+            if ((e.KeyChar >= '0') & (e.KeyChar <= '9') | (e.KeyChar == (char)8))
             {
                 return;
             }
